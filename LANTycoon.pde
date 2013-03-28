@@ -2,9 +2,8 @@ Game game;
 int tycoonState;
 
 void setup() {
-  size(500, 500);
+  size(800, 500);
   background(0);
-  
   game = new Game();
   tycoonState = 0;
 }
