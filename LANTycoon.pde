@@ -1,22 +1,35 @@
 import java.util.List;
 
 boolean testRad = false; // TEST
+List<Cube> cubes;
+Cube tempCube;
 
 void setup() {
   size(500, 500);
   background(0);
   grid();
   noStroke();
+
+  cubes = new ArrayList<Cube>();
 }
 
 void draw() {
   background(0);
   grid();
   menu();
-  if (testRad) { // rad 1x4 seter
-    fill(134, 120, 39);
-    rect((mouseX/10)*10, (mouseY/10)*10, 40, 10);
+
+  for (Cube c : cubes) {
+    c.draw();
   }
+
+  if (tempCube != null) {
+    tempCube.update();
+    tempCube.draw();
+  }
+  //if (testRad) { // rad 1x4 seter
+  // fill(134, 120, 39);
+  //rect((mouseX/10)*10, (mouseY/10)*10, 40, 10);
+  // }
 }
 
 void menu() {
@@ -24,40 +37,48 @@ void menu() {
   rect(400, 100, 40, 10);
 }
 
-void grid() {
+void grid() { // For small map
   stroke(64);
-  for (int x = 0; x < 500; x += 10) {
-    line(x, 0, x, 500);
-    for (int y = 0; y < 500; y += 10) {
-      line(0, y, 500, y);
+  for (int x = 200; x < 300; x += 10) {
+    line(x, 200, x, 250);
+    for (int y = 200; y < 250; y += 10) {
+      line(200, y, 300, y);
     }
   }
-  //noStroke();
+  line(300, 200, 300, 250);
+  line(200, 250, 300, 250);
   stroke(255);
 }
 
 void mouseDragged() {
-  //if (testRad) { // rad 1x4 seter
-   // fill(134, 120, 39);
-   // rect((mouseX/10)*10, (mouseY/10)*10, 40, 10);
- // }
 }
 
+// Dette blir en stor menu handler, boer nok lages en egen klasse for denne en gang :\
 void mousePressed() {
-  if (mouseX > 440)
+  if (mouseX > 440 || mouseX < 400 || mouseY < 100 || mouseY > 110)
     return;
-  if (mouseX < 400)
-    return;
-  if (mouseY < 100)
-    return;
-  if (mouseY > 110)
-    return;
-  testRad = true;
+  else if (tempCube == null) {
+    tempCube = new Cube(mouseX, mouseY, 'B');
+  }
 }
 
 void mouseReleased() {
-  // TODO Check if legal
-  testRad = false;
+  // TODO Add map constraints
+  if (tempCube != null) {
+    if (mouseX > 200 && mouseY > 200 && mouseX < 300 && mouseY < 250) { // This can be small map
+      for (Cube c : cubes) { // Look for busy area
+        if (!c.available(tempCube)) {
+          tempCube = null;
+          return;
+        }
+      }
+      cubes.add(tempCube);
+      tempCube = null;
+    } 
+    else {
+      tempCube = null;
+    }
+  }
 }
 
 void mouseClicked() {
