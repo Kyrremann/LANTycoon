@@ -1,6 +1,6 @@
 class Cube {
 
-  int x, y;
+  int x, y, r, g, b;
   char type;
   int w, h;
 
@@ -10,17 +10,35 @@ class Cube {
     this.type = type;
 
     switch (type) {
-    case 'B':
-      // TODO sett farge
+    case 'T':
+      //TABLE
       w = 40;
       h = 10;
+      r = 134;
+      g = 120;
+      b = 39;
       break;
+    case 'E':
+      //EXIT/ENTRANCE
+      w = 20;
+      h = 10;
+      r = 0;
+      g = 250;
+      b = 0;
+      break;
+    case 'U':
+      w = 80;
+      h = 30;
+      r = 255;
+      g = 255;
+      b = 255;
     }
   }
 
   void draw() {
-    fill(134, 120, 39);
+    fill(r, g, b);
     rect(x, y, w, h);
+
     // rect((mouseX/10)*10, (mouseY/10)*10, 40, 10);
   }
 
