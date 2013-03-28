@@ -1,5 +1,5 @@
 class Cube {
-  int x, y, r, g, b,w, h, seats, value, price;
+  int x, y, r, g, b,w, h, value, price, seats, maxSeats;
   char type;
 
   public Cube(int x, int y, char type) {
@@ -15,6 +15,7 @@ class Cube {
       g = 120;
       b = 39;
       price = 800;
+      
       break;
     case 't': //M TABLE
       w = 20;
