@@ -53,6 +53,15 @@ class Game {
       }
       break;
     case 2: // stats
+      time = ((millis() - time)*-1)/1000;
+      year +=1;
+      grid();
+      int[] results = calculateProfits();
+      fill(0, 50);
+      rect(0.0, 0.0, (float) displayWidth, (float) displayHeight);
+      fill(51, 51, 51);
+      rect(25, 25, 775, 475);
+
       break;
     }
   }
@@ -153,6 +162,8 @@ class Game {
   void stats() {
     // TODO add stats
     int x = 520;
+    fill(51, 51, 51);
+    rect(x+170, 470, 109, 29);
     fill(255);
     line(500, 350, 800, 350);
 
@@ -161,6 +172,7 @@ class Game {
     text("TIME: " + ((millis() - time)*-1)/1000, x, 370);
     text("MONEY: " + money, x, 400);
     text("YEAR: " + year, x, 430);
+    text("IM READY!", x+ 180, 491);
   }
 
   // Dette blir en stor menu handler, boer nok lages en egen klasse for denne en gang :\
@@ -178,7 +190,7 @@ class Game {
         else if (mouseY > 49 && mouseY < 49 + 10) tempCube = new Cube(mouseX, mouseY, 't');
         else if (mouseY > 29 && mouseY < 29 + 10) tempCube = new Cube(mouseX, mouseY, 'T');
       } 
-      else if (mouseX > 500 && mouseY < 344) { // states goes here
+      else if (mouseX > 500 && mouseY > 344) { // states goes here
       }
       break;
     case 2: // stats
@@ -241,13 +253,16 @@ class Game {
       } 
       else if (mouseX > 200 && mouseX < 250 && mouseY > 200 && mouseY < 250) { // vikingskipet
         lanHall = 3;
-      } 
+      }
       else {
         return;
       }
       gameState = 1;
       break;
     case 1: // build it
+      if (mouseX > 689 && mouseY > 469) {
+        this.gameState = 2;
+      }
       break;
     case 2: // stats
       break;
@@ -289,13 +304,15 @@ class Game {
       }
     }
     //Remove previous variables and use this single int array after dev is finished.
-    int [] result = {round(multiplier*100), income, expenses, round(income*multiplier), (round(income*multiplier) - expenses)};
-    return result;
+    int [] result = {
+      round(multiplier*100), income, expenses, round(income*multiplier), (round(income*multiplier) - expenses)
+      };
+      return result;
   }
 
   void keyPressed() {
     switch (gameState) {
-    case 0: // velg hall
+    case 0: // choose hall
       break;
     case 1: // build it
       break;

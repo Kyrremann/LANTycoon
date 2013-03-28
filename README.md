@@ -12,5 +12,6 @@ WE R GONNA WIN!
 - ~~Score calculation~~  
  - Balance variables
 - ~~Cost calculation~~  
-- End (year) turn stats  
+- End (year) turn stats display  
 - Valid location pathfinding  
+ - valid seat placement
