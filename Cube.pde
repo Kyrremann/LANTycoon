@@ -37,6 +37,7 @@ class Cube {
       r = 255;
       g = 0;
       b = 0;
+      break;
     case 'K': //KOMPLETT.NO
       w = 100;
       h = 80;
@@ -46,10 +47,11 @@ class Cube {
       break;
     case 'R': //RNDSTAND
       w = 60;
-      h = 10;
+      h = 20;
       r = 100;
       g = 100;
       b = 100;
+      break;
     case 'E': //ENTRANCE
       w = 20;
       h = 10;
