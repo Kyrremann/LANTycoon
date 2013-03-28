@@ -1,11 +1,15 @@
 LANTycoon
 =========
 
-LAN Tycoon
+WE R GONNA WIN!
 
 ##TODO
-- Game menu  
-- Ingame Menu  
+- ~~Game menu~~
+ - update when halls are finished  
+ - GFX improvement
+- ~~Ingame Menu~~ 
+ - minor fixes  
+ - GFX improvement
 - Score calculation  
 - Cost calculation  
 - End (year) turn stats  
