@@ -58,7 +58,10 @@ class Game {
     translate(500, 0);
     textSize(12);
     //TEXT
-    line(0, 0, 0, 500);
+    fill(0);
+    rect(0, -1, 300, 500);
+    fill(200);
+    stroke(255);
     text("BORD", 15, 20);
     text("800,-", 5, 40);
     text("300,-", 5, 60);
@@ -125,9 +128,18 @@ class Game {
     case 1: // build it
       if (mouseX >500) { // clicked inside menu/panel area
  // the following if's are for the different cubes
-        if (mouseY >324) tempCube = new Cube(mouseX, mouseY, 'R');
-        else if (mouseY >209) tempCube = new Cube(mouseX, mouseY, 'K');
-        else if (mouseY >139) tempCube = new Cube(mouseX, mouseY, 'U');
+        if (mouseY >324){
+          tempCube = new Cube(mouseX, mouseY, 'R');
+          println("RRRRRRRRRRRRR");
+        }
+        else if (mouseY >209) {
+          tempCube = new Cube(mouseX, mouseY, 'K');
+          println("KKKKKKKKKKKK");
+        }
+        else if (mouseY >120) {
+          tempCube = new Cube(mouseX, mouseY, 'U');
+          println("UUUUUUUUUUU");
+        }
         else if (mouseY >69) tempCube = new Cube(mouseX, mouseY, 'B');
         else if (mouseY >49) tempCube = new Cube(mouseX, mouseY, 't');
         else if (mouseY >29) tempCube = new Cube(mouseX, mouseY, 'T');
