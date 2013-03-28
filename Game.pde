@@ -1,21 +1,23 @@
 import java.util.List;
 
-List<Cube> cubes;
-Cube tempCube;
-int gameState;
-int lanHall;
-
 class Game {
+  List<Cube> cubes;
+  Cube tempCube;
+  int gameState;
+  int lanHall, hminw, hmaxw, hminh, hmaxh;
+  long time, money, year;
+  boolean hallDrawn;
 
   public Game() {
-    grid();
-    noStroke();
-
     cubes = new ArrayList<Cube>();
-    cubes.add(new Cube(210, 250, 'E')); //Entrance
 
     gameState = 0;
     lanHall = -1;
+
+    // temp
+    time = millis();
+    year = 1992;
+    money = 10000;
   }
 
   void draw() {
@@ -25,6 +27,7 @@ class Game {
       textAlign(LEFT);
       textSize(21);
       text("Choose your LAN hall:", 30, 30);
+      stroke(255);
       fill(128, 128, 128);
       rect(100, 100, 50, 50);
       fill(255, 0, 0);
@@ -33,10 +36,12 @@ class Game {
       rect(100, 200, 50, 50);
       fill(0, 0, 255);
       rect(200, 200, 50, 50);
+      noStroke();
       break;
     case 1: // build it
       grid();
       menu();
+      stats();
 
       for (Cube c : cubes) {
         c.draw();
@@ -62,6 +67,7 @@ class Game {
     rect(0, -1, 300, 500);
     fill(200);
     stroke(255);
+    
     text("BORD", 15, 20);
     text("800,-", 5, 40);
     text("300,-", 5, 60);
@@ -81,7 +87,7 @@ class Game {
     rect(60, 30, 40, 10);
     rect(60, 50, 20, 10);
     rect(60, 70, 10, 10);
-    
+
     //RECT UiO
     fill(255, 0, 0);
     rect(60, 140, 100, 30);
@@ -97,27 +103,64 @@ class Game {
     popMatrix();
   }
 
-  void grid() { 
-    switch(lanHall) {
-    case 0: // for small map
-      stroke(64);
-      for (int x = 200; x < 300; x += 10) {
-        line(x, 200, x, 250);
-        for (int y = 200; y < 250; y += 10) {
-          line(200, y, 300, y);
-        }
+  void grid() {
+    if (!hallDrawn) {
+      switch(lanHall) {
+      case 0: // for small map
+        hminw = 200;
+        hmaxw = 300;
+        hminh = 200;
+        hmaxh = 250;
+        cubes.add(new Cube(hminw, hmaxh, 'E')); //Entrance
+        break;
+      case 1: // for medium map
+        hminw = 150;
+        hmaxw = 350;
+        hminh = 200;
+        hmaxh = 300;
+        cubes.add(new Cube(hminw, hmaxh, 'E')); //Entrance
+        break;
+      case 2: // for big map
+        hminw = 50;
+        hmaxw = 450;
+        hminh = 200;
+        hmaxh = 400;
+        cubes.add(new Cube(hminw, hmaxh, 'E')); //Entrance
+        break;
+      case 3: // for vikingskipet map
+        hminw = 50;
+        hmaxw = 450;
+        hminh = 50;
+        hmaxh = 450;
+        cubes.add(new Cube(hminw, hmaxh, 'E')); //Entrance
+        break;
       }
-      line(300, 200, 300, 250);
-      line(200, 250, 300, 250);
-      stroke(255);
-      break;
-    case 1: // for medium map
-      break;
-    case 2: // for big map
-      break;
-    case 3: // for vikingskipet map
-      break;
+      hallDrawn = true;
     }
+
+    stroke(64);
+    for (int x = hminw; x < hmaxw; x += 10) {
+      line(x, hminh, x, hmaxh);
+      for (int y = hminh; y < hmaxh; y += 10) {
+        line(hminw, y, hmaxw, y);
+      }
+    }
+    line(hmaxw, hminh, hmaxw, hmaxh);
+    line(hminw, hmaxh, hmaxw, hmaxh);
+    stroke(255);
+  }
+
+  void stats() {
+    // TODO add stats
+    int x = 520;
+    fill(255);
+    line(500, 350, 800, 350);
+
+    textAlign(LEFT);
+    textSize(18);
+    text("TIME: " + time, x, 370);
+    text("MONEY: " + money, x, 400);
+    text("YEAR: " + year, x, 430);
   }
 
   // Dette blir en stor menu handler, boer nok lages en egen klasse for denne en gang :\
@@ -126,23 +169,16 @@ class Game {
     case 0: // velg hall
       break;
     case 1: // build it
-      if (mouseX >500) { // clicked inside menu/panel area
- // the following if's are for the different cubes
-        if (mouseY >324){
-          tempCube = new Cube(mouseX, mouseY, 'R');
-          println("RRRRRRRRRRRRR");
-        }
-        else if (mouseY >209) {
-          tempCube = new Cube(mouseX, mouseY, 'K');
-          println("KKKKKKKKKKKK");
-        }
-        else if (mouseY >120) {
-          tempCube = new Cube(mouseX, mouseY, 'U');
-          println("UUUUUUUUUUU");
-        }
-        else if (mouseY >69) tempCube = new Cube(mouseX, mouseY, 'B');
-        else if (mouseY >49) tempCube = new Cube(mouseX, mouseY, 't');
-        else if (mouseY >29) tempCube = new Cube(mouseX, mouseY, 'T');
+      if (mouseX > 500 && mouseY < 344) { // clicked inside menu/panel area
+        // the following if's are for the different cubes
+        if (mouseY > 324 && mouseY < 324 + 20) tempCube = new Cube(mouseX, mouseY, 'R');
+        else if (mouseY > 209 && mouseY < 209 + 80) tempCube = new Cube(mouseX, mouseY, 'K');
+        else if (mouseY > 139 && mouseY < 139 + 30) tempCube = new Cube(mouseX, mouseY, 'U');
+        else if (mouseY > 69 && mouseY < 69 + 10) tempCube = new Cube(mouseX, mouseY, 'B');
+        else if (mouseY > 49 && mouseY < 49 + 10) tempCube = new Cube(mouseX, mouseY, 't');
+        else if (mouseY > 29 && mouseY < 29 + 10) tempCube = new Cube(mouseX, mouseY, 'T');
+      } 
+      else if (mouseX > 500 && mouseY < 344) { // states goes here
       }
       break;
     case 2: // stats
@@ -163,16 +199,23 @@ class Game {
       else {
         // TODO Add map constraints
         if (tempCube != null) {
-          if (mouseX > 200 && mouseY > 200 && mouseX < 310-tempCube.w && mouseY < 260-tempCube.h) { // This can be small map
+          if (mouseX > hminw && mouseY > hminh && mouseX <= 10 + hmaxw-tempCube.w && mouseY <= 10 + hmaxh-tempCube.h) {
             for (Cube c : cubes) { // Look for busy area
               if (!c.available(tempCube)) {
                 tempCube = null;
                 return;
               }
             }
+            if (money < tempCube.price) {
+              // TODO inform about to expensive
+              tempCube = null;
+              return;
+            }
             cubes.add(tempCube);
+            // remove money from account
+            money -= tempCube.price;
             tempCube = null;
-          }
+          } 
           else {
             tempCube = null;
           }
@@ -197,7 +240,7 @@ class Game {
         lanHall = 2;
       } 
       else if (mouseX > 200 && mouseX < 250 && mouseY > 200 && mouseY < 250) { // vikingskipet
-        lanHall = 2;
+        lanHall = 3;
       } 
       else {
         return;
@@ -219,7 +262,7 @@ class Game {
       break;
     case 2: // stats
       gameState = 0;
-      LANTycoon.this.gameState = 0;
+      LANTycoon.this.tycoonState = 0;
       break;
     }
   }

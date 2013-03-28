@@ -1,6 +1,6 @@
 class Cube {
 
-  int x, y, r, g, b, value;
+  int x, y, r, g, b, value, price;
   char type;
   int w, h;
 
@@ -16,6 +16,7 @@ class Cube {
       r = 134;
       g = 120;
       b = 39;
+      price = 800;
       break;
     case 't': //M TABLE
       w = 20;
@@ -23,6 +24,7 @@ class Cube {
       r = 134;
       g = 120;
       b = 39;
+      price = 300;
       break;
     case 'B': //S TABLE
       w = 10;
@@ -30,6 +32,7 @@ class Cube {
       r = 134;
       g = 120;
       b = 39;
+      price = 100;
       break;
     case 'U': //UiO
       w = 80;
@@ -37,6 +40,7 @@ class Cube {
       r = 255;
       g = 0;
       b = 0;
+      price = 2000;
       break;
     case 'K': //KOMPLETT.NO
       w = 100;
@@ -44,6 +48,7 @@ class Cube {
       r = 0;
       g = 128;
       b = 255;
+      price = 50000;
       break;
     case 'R': //RNDSTAND
       w = 60;
@@ -51,6 +56,7 @@ class Cube {
       r = 100;
       g = 100;
       b = 100;
+      price = 1500;
       break;
     case 'E': //ENTRANCE
       w = 20;
@@ -58,6 +64,7 @@ class Cube {
       r = 0;
       g = 250;
       b = 0;
+      price = 0;
       break;
     }
   }

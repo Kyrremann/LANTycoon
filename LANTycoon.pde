@@ -5,7 +5,7 @@ void setup() {
   size(800, 500);
   background(0);
   game = new Game();
-  tycoonState = 0;
+  tycoonState = 2;
 }
 
 void draw() {
