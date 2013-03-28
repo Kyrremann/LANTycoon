@@ -1,18 +1,23 @@
 import java.util.List;
 
-List<Cube> cubes;
-Cube tempCube;
-int gameState;
-int lanHall, hminw, hmaxw, hminh, hmaxh;
-boolean hallDrawn;
-
 class Game {
+  List<Cube> cubes;
+  Cube tempCube;
+  int gameState;
+  int lanHall, hminw, hmaxw, hminh, hmaxh;
+  long time, money, year;
+  boolean hallDrawn;
 
   public Game() {
     cubes = new ArrayList<Cube>();
 
     gameState = 0;
     lanHall = -1;
+
+    // temp
+    time = millis();
+    year = 1992;
+    money = 10000;
   }
 
   void draw() {
@@ -143,9 +148,18 @@ class Game {
     line(hminw, hmaxh, hmaxw, hmaxh);
     stroke(255);
   }
-  
+
   void stats() {
     // TODO add stats
+    int x = 520;
+    fill(255);
+    line(500, 350, 800, 350);
+
+    textAlign(LEFT);
+    textSize(18);
+    text("TIME: " + time, x, 370);
+    text("MONEY: " + money, x, 400);
+    text("YEAR: " + year, x, 430);
   }
 
   // Dette blir en stor menu handler, boer nok lages en egen klasse for denne en gang :\
@@ -162,7 +176,8 @@ class Game {
         else if (mouseY > 69 && mouseY < 69 + 10) tempCube = new Cube(mouseX, mouseY, 'B');
         else if (mouseY > 49 && mouseY < 49 + 10) tempCube = new Cube(mouseX, mouseY, 't');
         else if (mouseY > 29 && mouseY < 29 + 10) tempCube = new Cube(mouseX, mouseY, 'T');
-      } else if (mouseX > 500 && mouseY < 344) { // states goes here
+      } 
+      else if (mouseX > 500 && mouseY < 344) { // states goes here
       }
       break;
     case 2: // stats
@@ -190,9 +205,16 @@ class Game {
                 return;
               }
             }
+            if (money < tempCube.price) {
+              // TODO inform about to expensive
+              tempCube = null;
+              return;
+            }
             cubes.add(tempCube);
+            // remove money from account
+            money -= tempCube.price;
             tempCube = null;
-          }
+          } 
           else {
             tempCube = null;
           }
@@ -239,7 +261,7 @@ class Game {
       break;
     case 2: // stats
       gameState = 0;
-      LANTycoon.this.gameState = 0;
+      LANTycoon.this.tycoonState = 0;
       break;
     }
   }
