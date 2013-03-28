@@ -61,7 +61,6 @@ class Cube {
 
   // Return true if avaiable
   boolean available(Cube c) {
-    System.out.println(c.x + " - " + x);
     if (c.x >= (x+w)) return true;
     if (c.y >= (y+h)) return true;
     if ((c.x+c.w) <= x) return true;

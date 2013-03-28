@@ -53,8 +53,32 @@ class Game {
   }
 
   void menu() {
+    pushMatrix();
+    fill(200, 200, 200);
+    translate(500, 0);
+    //TEXT
+    line(0, 0, 0, 500);
+    text("BORD", 15, 20);
+    text("800,-", 5, 40);
+    text("300,-", 5, 60);
+    text("100,-", 5, 80);
+
+    text("UiO", 20, 130);
+    //RECTS TABLE
     fill(134, 120, 39);
-    rect(400, 100, 40, 10);
+    rect(60, 30, 40, 10);
+    rect(60, 50, 20, 10);
+    rect(60, 70, 10, 10);
+    //RECT UiO
+    fill(255, 0, 0);
+    rect(60, 140, 80, 30);
+    //RECT KOMPLETT
+    fill(0, 128, 255);
+    rect(10, 200, 100, 80);
+    //RECT RNDSTAND
+    fill(100, 100, 100);
+    rect(10, 300, 30, 10);
+    popMatrix();
   }
 
   void grid() { // For small map
@@ -118,20 +142,20 @@ class Game {
     }
   }
 
-  void () {
+  void mouseClicked() {
     switch (gameState) {
     case 0: // velg hall
       if (mouseX > 100 && mouseX < 150 && mouseY > 100 && mouseY < 150) { // small hall
-      lanHall = 0;
+        lanHall = 0;
       } 
       else if (mouseX > 200 && mouseX < 250 && mouseY > 100 && mouseY < 150) { // medium
-      lanHall = 1;
+        lanHall = 1;
       } 
       else if (mouseX > 100 && mouseX < 150 && mouseY > 200 && mouseY < 250) { // large
-      lanHall = 2;
+        lanHall = 2;
       } 
       else if (mouseX > 200 && mouseX < 250 && mouseY > 200 && mouseY < 250) { // vikingskipet
-      lanHall = 2;
+        lanHall = 2;
       }
       gameState = 1;
       break;
