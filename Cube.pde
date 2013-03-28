@@ -1,6 +1,6 @@
 class Cube {
 
-  int x, y, r, g, b;
+  int x, y, r, g, b, verdi;
   char type;
   int w, h;
 
@@ -10,7 +10,7 @@ class Cube {
     this.type = type;
 
     switch (type) {
-    case 'T':
+    case 'T': //TABLE
       //TABLE
       w = 40;
       h = 10;
@@ -18,20 +18,32 @@ class Cube {
       g = 120;
       b = 39;
       break;
-    case 'E':
-      //EXIT/ENTRANCE
+    case 'U': //UiO
+      w = 80;
+      h = 30;
+      r = 255;
+      g = 0;
+      b = 0;
+    case 'K': //KOMPLETT.NO
+      w = 100;
+      h = 80;
+      r = 0;
+      g = 128;
+      b = 255;
+      break;
+    case 'Q': //QPAD
+      w = 60;
+      h = 10;
+      r = 255;
+      g = 255;
+      b = 255;
+    case 'E': //ENTRANCE
       w = 20;
       h = 10;
       r = 0;
       g = 250;
       b = 0;
       break;
-    case 'U':
-      w = 80;
-      h = 30;
-      r = 255;
-      g = 255;
-      b = 255;
     }
   }
 

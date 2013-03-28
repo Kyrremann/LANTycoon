@@ -11,7 +11,7 @@ void setup() {
   noStroke();
 
   cubes = new ArrayList<Cube>();
-  cubes.add(new Cube(210, 250, 'E'));
+  cubes.add(new Cube(210, 250, 'E')); //Entrance
 }
 
 void draw() {
@@ -58,9 +58,6 @@ void mouseDragged() {
 void mousePressed() {
   if (mouseX < 440 || mouseX > 400 || mouseY > 100 || mouseY < 110 && tempCube == null)
     tempCube = new Cube(mouseX, mouseY, 'T');
-  else {
-    return;
-  }
 }
 
 void mouseReleased() {
@@ -68,11 +65,11 @@ void mouseReleased() {
     int tempValue = tempCube.w;
     tempCube.w = tempCube.h;
     tempCube.h = tempValue;
-  } 
+  }
   else {
     // TODO Add map constraints
     if (tempCube != null) {
-      if (mouseX > 200 && mouseY > 200 && mouseX < 300 && mouseY < 250) { // This can be small map
+      if (mouseX > 200 && mouseY > 200 && mouseX < 310-tempCube.w && mouseY < 260-tempCube.h) { // This can be small map
         for (Cube c : cubes) { // Look for busy area
           if (!c.available(tempCube)) {
             tempCube = null;
