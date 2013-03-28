@@ -10,9 +10,22 @@ class Cube {
     this.type = type;
 
     switch (type) {
-    case 'T': //TABLE
-      //TABLE
+    case 'T': //L TABLE
       w = 40;
+      h = 10;
+      r = 134;
+      g = 120;
+      b = 39;
+      break;
+    case 't': //M TABLE
+      w = 20;
+      h = 10;
+      r = 134;
+      g = 120;
+      b = 39;
+      break;
+    case 'B': //S TABLE
+      w = 10;
       h = 10;
       r = 134;
       g = 120;
@@ -31,12 +44,12 @@ class Cube {
       g = 128;
       b = 255;
       break;
-    case 'Q': //QPAD
+    case 'R': //RNDSTAND
       w = 60;
       h = 10;
-      r = 255;
-      g = 255;
-      b = 255;
+      r = 100;
+      g = 100;
+      b = 100;
     case 'E': //ENTRANCE
       w = 20;
       h = 10;

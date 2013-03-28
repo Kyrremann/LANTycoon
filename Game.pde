@@ -56,6 +56,7 @@ class Game {
     pushMatrix();
     fill(200, 200, 200);
     translate(500, 0);
+    textSize(12);
     //TEXT
     line(0, 0, 0, 500);
     text("BORD", 15, 20);
@@ -64,8 +65,14 @@ class Game {
     text("100,-", 5, 80);
 
     text("UiO", 20, 130);
-    text("KOMPLETT", 20, 190);
-    
+    text("2 000,-", 5, 150);
+
+    text("KOMPLETT.NO", 20, 200);
+    text("50 000,-", 5, 220);
+
+    text("RND STAND", 20, 315);
+    text("1 500,-", 5, 335);
+
     //RECTS TABLE
     fill(134, 120, 39);
     rect(60, 30, 40, 10);
@@ -74,16 +81,16 @@ class Game {
     
     //RECT UiO
     fill(255, 0, 0);
-    rect(60, 140, 80, 30);
-    
+    rect(60, 140, 100, 30);
+
     //RECT KOMPLETT
     fill(0, 128, 255);
-    rect(60, 200, 100, 80);
-    
-    
+    rect(60, 210, 100, 80);
+
     //RECT RNDSTAND
     fill(100, 100, 100);
-    rect(10, 300, 30, 10);
+    rect(60, 325, 60, 20);
+
     popMatrix();
   }
 
@@ -111,15 +118,19 @@ class Game {
   }
 
   // Dette blir en stor menu handler, boer nok lages en egen klasse for denne en gang :\
-  void mousePressed() {    
+  void mousePressed() {
     switch (gameState) {
     case 0: // velg hall
       break;
     case 1: // build it
-      if (mouseX > 500) { // clicked inside menu/panel area
-        // the following if's are for the different cubes
-        //if (mouseY > 100 && mouseY < 110 && tempCube == null) 
-          tempCube = new Cube(mouseX, mouseY, 'T');
+      if (mouseX >500) { // clicked inside menu/panel area
+ // the following if's are for the different cubes
+        if (mouseY >324) tempCube = new Cube(mouseX, mouseY, 'R');
+        else if (mouseY >209) tempCube = new Cube(mouseX, mouseY, 'K');
+        else if (mouseY >139) tempCube = new Cube(mouseX, mouseY, 'U');
+        else if (mouseY >69) tempCube = new Cube(mouseX, mouseY, 'B');
+        else if (mouseY >49) tempCube = new Cube(mouseX, mouseY, 't');
+        else if (mouseY >29) tempCube = new Cube(mouseX, mouseY, 'T');
       }
       break;
     case 2: // stats
