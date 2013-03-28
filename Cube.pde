@@ -1,6 +1,6 @@
 class Cube {
 
-  int x, y, r, g, b, value, price;
+  int x, y, r, g, b, value, price, maxSeats;
   char type;
   int w, h;
 
@@ -17,6 +17,7 @@ class Cube {
       g = 120;
       b = 39;
       price = 800;
+      
       break;
     case 't': //M TABLE
       w = 20;
