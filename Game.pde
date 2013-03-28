@@ -64,34 +64,50 @@ class Game {
     text("100,-", 5, 80);
 
     text("UiO", 20, 130);
+    text("KOMPLETT", 20, 190);
+    
     //RECTS TABLE
     fill(134, 120, 39);
     rect(60, 30, 40, 10);
     rect(60, 50, 20, 10);
     rect(60, 70, 10, 10);
+    
     //RECT UiO
     fill(255, 0, 0);
     rect(60, 140, 80, 30);
+    
     //RECT KOMPLETT
     fill(0, 128, 255);
-    rect(10, 200, 100, 80);
+    rect(60, 200, 100, 80);
+    
+    
     //RECT RNDSTAND
     fill(100, 100, 100);
     rect(10, 300, 30, 10);
     popMatrix();
   }
 
-  void grid() { // For small map
-    stroke(64);
-    for (int x = 200; x < 300; x += 10) {
-      line(x, 200, x, 250);
-      for (int y = 200; y < 250; y += 10) {
-        line(200, y, 300, y);
+  void grid() { 
+    switch(lanHall) {
+    case 0: // for small map
+      stroke(64);
+      for (int x = 200; x < 300; x += 10) {
+        line(x, 200, x, 250);
+        for (int y = 200; y < 250; y += 10) {
+          line(200, y, 300, y);
+        }
       }
+      line(300, 200, 300, 250);
+      line(200, 250, 300, 250);
+      stroke(255);
+      break;
+    case 1: // for medium map
+      break;
+    case 2: // for big map
+      break;
+    case 3: // for vikingskipet map
+      break;
     }
-    line(300, 200, 300, 250);
-    line(200, 250, 300, 250);
-    stroke(255);
   }
 
   // Dette blir en stor menu handler, boer nok lages en egen klasse for denne en gang :\
@@ -100,8 +116,11 @@ class Game {
     case 0: // velg hall
       break;
     case 1: // build it
-      if (mouseX < 440 || mouseX > 400 || mouseY > 100 || mouseY < 110 && tempCube == null)
-        tempCube = new Cube(mouseX, mouseY, 'T');
+      if (mouseX > 500) { // clicked inside menu/panel area
+        // the following if's are for the different cubes
+        //if (mouseY > 100 && mouseY < 110 && tempCube == null) 
+          tempCube = new Cube(mouseX, mouseY, 'T');
+      }
       break;
     case 2: // stats
       break;
@@ -156,6 +175,9 @@ class Game {
       } 
       else if (mouseX > 200 && mouseX < 250 && mouseY > 200 && mouseY < 250) { // vikingskipet
         lanHall = 2;
+      } 
+      else {
+        return;
       }
       gameState = 1;
       break;

@@ -1,6 +1,6 @@
 class Cube {
 
-  int x, y, r, g, b, verdi;
+  int x, y, r, g, b, value;
   char type;
   int w, h;
 
