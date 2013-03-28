@@ -66,6 +66,7 @@ class Game {
     fill(0);
     rect(0, -1, 300, 500);
     fill(200);
+    stroke(255);
 
     text("BORD", 15, 20);
     text("800,-", 5, 40);
@@ -157,7 +158,7 @@ class Game {
 
     textAlign(LEFT);
     textSize(18);
-    text("TIME: " + time, x, 370);
+    text("TIME: " + ((millis() - time)*-1)/1000, x, 370);
     text("MONEY: " + money, x, 400);
     text("YEAR: " + year, x, 430);
   }

@@ -44,7 +44,7 @@ void mousePressed() {
   case 1: // howto
     break;
   case 2: // game
-  game.mousePressed();
+    game.mousePressed();
     break;
   case 3: // score
     break;
@@ -58,7 +58,7 @@ void mouseReleased() {
   case 1: // howto
     break;
   case 2: // game
-  game.mouseReleased();
+    game.mouseReleased();
     break;
   case 3: // score
     break;
@@ -74,7 +74,7 @@ void mouseClicked() {
     tycoonState = 2;
     break;
   case 2: // game
-  game.mouseClicked();
+    game.mouseClicked();
     break;
   case 3: // score
     break;
