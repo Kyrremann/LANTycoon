@@ -63,7 +63,6 @@ class Cube {
       r = 0;
       g = 250;
       b = 0;
-      price = null;
       break;
     }
   }
