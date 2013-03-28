@@ -254,6 +254,48 @@ class Game {
     }
   }
 
+  int[] calculateProfits() {
+    int expenses = 0;
+    int income = 0;
+    float multiplier = 1.0;
+    for (Cube c : cubes) {
+      switch (c.type) {
+      case 'T': //L TABLE
+        expenses += c.price;
+        income += 100*c.seats;
+        break;
+      case 't': //M TABLE
+        expenses += c.price;
+        income += 100*c.seats;
+        price = 300;
+        break;
+      case 'B': //S TABLE
+        expenses += c.price;
+        income += 100*c.seats;
+        price = 100;
+        break;
+      case 'U': //UiO
+        expenses += c.price;
+        multiplier += 0.15;
+        price = 2000;
+        break;
+      case 'K': //KOMPLETT.NO
+        expenses += c.price;
+        multiplier += 0.75;
+        price = 50000;
+        break;
+      case 'R': //RNDSTAND
+        expenses += c.price;
+        multiplier += 0.1;
+        price = 1500;
+        break;
+      case 'E': //ENTRANCE
+        break;
+      }
+    }
+    return multiplier*100, income, expenses, round(income*multiplier), round(income*multiplier) - expenses;
+  }
+
   void keyPressed() {
     switch (gameState) {
     case 0: // velg hall

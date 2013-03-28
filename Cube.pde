@@ -1,8 +1,6 @@
 class Cube {
-
-  int x, y, r, g, b, value, price;
+  int x, y, r, g, b,w, h, seats, value, price;
   char type;
-  int w, h;
 
   public Cube(int x, int y, char type) {
     this.x = x;
@@ -64,7 +62,7 @@ class Cube {
       r = 0;
       g = 250;
       b = 0;
-      price = 0;
+      price = null;
       break;
     }
   }
