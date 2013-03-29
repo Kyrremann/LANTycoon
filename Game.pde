@@ -42,6 +42,7 @@ class Game {
       grid();
       menu();
       stats();
+      ent.draw();
 
       for (Cube c : cubes) {
         c.draw();
@@ -51,7 +52,6 @@ class Game {
         tempCube.update();
         tempCube.draw();
       }
-      ent.draw();
       break;
     case 2: // stats
       time = ((millis() - time)*-1)/1000;
@@ -62,7 +62,6 @@ class Game {
       rect(0.0, 0.0, (float) displayWidth, (float) displayHeight);
       fill(51, 51, 51);
       rect(25, 25, 775, 475);
-
       break;
     }
   }
@@ -79,7 +78,7 @@ class Game {
     fill(200);
     stroke(255);
 
-    text("BORD", 15, 20);
+    text("TABLE", 15, 20);
     text("800,-", 5, 40);
     text("300,-", 5, 60);
     text("100,-", 5, 80);
@@ -205,12 +204,11 @@ class Game {
     case 0: // velg hall
       break;
     case 1: // build it
-      if (mouseButton == RIGHT) {
-        if (tempCube != null) {
-          int tempValue = tempCube.w;
-          tempCube.w = tempCube.h;
-          tempCube.h = tempValue;
-        }
+      if (mouseButton == RIGHT && tempCube != null) {
+        int tempValue = tempCube.w;
+        tempCube.w = tempCube.h;
+        tempCube.h = tempValue;
+        tempCube.vertical = !tempCube.vertical;
       }
       else if (mouseButton == LEFT) {
         if (tempCube != null) {
@@ -227,7 +225,7 @@ class Game {
               return;
             }
             tempCube.saveClearSeats(cubes);
-            //money -= c.price;
+            money -= tempCube.price;
             cubes.add(tempCube);
             tempCube = null;
           } 
@@ -263,6 +261,21 @@ class Game {
       gameState = 1;
       break;
     case 1: // build it
+      if (mouseButton == RIGHT && tempCube == null) {
+        if (mouseX > hminw && mouseX < hmaxw && mouseY > hminh && mouseY < hmaxh) {
+          Cube tmp = null;
+          for (Cube c : cubes) {
+            if (mouseX > c.x && mouseX < c.x + c.w && mouseY > c.y && mouseY < c.y + c.h) {
+              tmp = c;
+              break;
+            }
+          }
+          if (tmp != null) {
+            cubes.remove(tmp);
+            money += tmp.price / 2;
+          }
+        }
+      }
       if (mouseX > 689 && mouseY > 469) {
         this.gameState = 2;
       }
