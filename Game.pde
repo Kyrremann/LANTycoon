@@ -2,7 +2,7 @@ import java.util.List;
 
 class Game {
   List<Cube> cubes;
-  Cube tempCube;
+  Cube tempCube, ent;
   int gameState;
   int lanHall, hminw, hmaxw, hminh, hmaxh;
   long time, money, year;
@@ -19,7 +19,7 @@ class Game {
     // temp
     time = millis()+120000;
     year = 1992;
-    money = 10000;
+    money = 1000;
   }
 
   void draw() {
@@ -35,13 +35,13 @@ class Game {
       text("Menighetshus\n0,-", 160,117);
       fill(255, 0, 0);
       rect(320, 100, 50, 50);
-      text("Gymsal\n10 000,-", 380,117);
+      text("Gymsal\n1 000,-", 380,117);
       fill(0, 255, 0);
       rect(100, 300, 50, 50);
-      text("Flerbrukshall\n100 000,-", 160,317);
+      text("Flerbrukshall\n5 000,-", 160,317);
       fill(0, 0, 255);
       rect(320, 300, 50, 50);
-      text("Vikingskipet\n10 000 000,-", 380,317);
+      text("Vikingskipet\n10 000,-", 380,317);
       noStroke();
       break;
     case 1: // build it
@@ -52,6 +52,7 @@ class Game {
       grid();
       menu();
       stats();
+      ent.draw();
 
       for (Cube c : cubes) {
         c.draw();
@@ -63,7 +64,6 @@ class Game {
       }
       break;
     case 2: // stats
-      textAlign(LEFT);
       if (gameCompleted) {
         time = ((millis() - time)*-1)/1000;
         year +=1;
@@ -74,6 +74,7 @@ class Game {
       for (Cube c : cubes) {
         c.draw();
       }
+      textAlign(LEFT);
       fill(0, 50);
       rect(-10.0, -10.0, (float) displayWidth, (float) displayHeight);
       fill(121, 121, 121, 199);
@@ -107,6 +108,7 @@ class Game {
 
   void menu() {
     pushMatrix();
+    textAlign(LEFT);
     fill(200, 200, 200);
     translate(500, 0);
     textSize(12);
@@ -116,7 +118,7 @@ class Game {
     fill(200);
     stroke(255);
 
-    text("BORD", 15, 20);
+    text("TABLE", 15, 20);
     text("800,-", 5, 40);
     text("300,-", 5, 60);
     text("100,-", 5, 80);
@@ -159,28 +161,28 @@ class Game {
         hmaxw = 300;
         hminh = 200;
         hmaxh = 250;
-        cubes.add(new Cube(hminw, hmaxh, 'E')); //Entrance
+        ent = new Cube(hminw, hmaxh, 'E'); //Entrance
         break;
       case 1: // for medium map
         hminw = 150;
         hmaxw = 350;
         hminh = 200;
         hmaxh = 300;
-        cubes.add(new Cube(hminw, hmaxh, 'E')); //Entrance
+        ent = new Cube(hminw, hmaxh, 'E'); //Entrance
         break;
       case 2: // for big map
         hminw = 50;
         hmaxw = 450;
         hminh = 200;
         hmaxh = 400;
-        cubes.add(new Cube(hminw, hmaxh, 'E')); //Entrance
+        ent = new Cube(hminw, hmaxh, 'E'); //Entrance
         break;
       case 3: // for vikingskipet map
         hminw = 50;
         hmaxw = 450;
         hminh = 50;
         hmaxh = 450;
-        cubes.add(new Cube(hminw, hmaxh, 'E')); //Entrance
+        ent = new Cube(hminw, hmaxh, 'E'); //Entrance
         break;
       }
       hallDrawn = true;
@@ -242,13 +244,13 @@ class Game {
     case 0: // velg hall
       break;
     case 1: // build it
-      if (mouseButton == RIGHT) {
+      if (mouseButton == RIGHT && tempCube != null) {
         int tempValue = tempCube.w;
         tempCube.w = tempCube.h;
         tempCube.h = tempValue;
+        tempCube.vertical = !tempCube.vertical;
       }
-      else {
-        // TODO Add map constraints
+      else if (mouseButton == LEFT) {
         if (tempCube != null) {
           if (mouseX > hminw && mouseY > hminh && mouseX <= 10 + hmaxw-tempCube.w && mouseY <= 10 + hmaxh-tempCube.h) {
             for (Cube c : cubes) { // Look for busy area
@@ -262,9 +264,9 @@ class Game {
               tempCube = null;
               return;
             }
-            cubes.add(tempCube);
-            // remove money from account
+            tempCube.saveClearSeats(cubes);
             money -= tempCube.price;
+            cubes.add(tempCube);
             tempCube = null;
           } 
           else {
@@ -284,13 +286,13 @@ class Game {
       if (mouseX > 100 && mouseX < 150 && mouseY > 100 && mouseY < 150) { // small hall
         lanHall = 0;
       } 
-      else if (mouseX > 200 && mouseX < 250 && mouseY > 100 && mouseY < 150) { // medium
+      else if (mouseX > 320 && mouseX < 370 && mouseY > 100 && mouseY < 150) { // medium
         lanHall = 1;
       } 
-      else if (mouseX > 100 && mouseX < 150 && mouseY > 200 && mouseY < 250) { // large
+      else if (mouseX > 100 && mouseX < 150 && mouseY > 300 && mouseY < 350) { // large
         lanHall = 2;
       } 
-      else if (mouseX > 200 && mouseX < 250 && mouseY > 200 && mouseY < 250) { // vikingskipet
+      else if (mouseX > 320 && mouseX < 370 && mouseY > 300 && mouseY < 350) { // vikingskipet
         lanHall = 3;
       }
       else {
@@ -299,6 +301,21 @@ class Game {
       gameState = 1;
       break;
     case 1: // build it
+      if (mouseButton == RIGHT && tempCube == null) {
+        if (mouseX > hminw && mouseX < hmaxw && mouseY > hminh && mouseY < hmaxh) {
+          Cube tmp = null;
+          for (Cube c : cubes) {
+            if (mouseX > c.x && mouseX < c.x + c.w && mouseY > c.y && mouseY < c.y + c.h) {
+              tmp = c;
+              break;
+            }
+          }
+          if (tmp != null) {
+            cubes.remove(tmp);
+            money += tmp.price / 2;
+          }
+        }
+      }
       if (mouseX > 689 && mouseY > 469) {
         this.gameState = 2;
       }
@@ -318,23 +335,38 @@ class Game {
     }
   }
 
+  void mouseDragged() {
+    switch (gameState) {
+    case 0: // velg hall
+      break;
+    case 1: // build it
+      if (tempCube != null) {
+        tempCube.clearSeats(cubes);
+      }
+      break;
+    case 2: // stats
+      break;
+    }
+  }
+
   int[] calculateProfits() {
     int expenses = 0;
     int income = 0;
     float multiplier = 1.0;
+    int ticketPrice = 100+(lanHall*100);
     for (Cube c : cubes) {
       switch (c.type) {
       case 'T': //L TABLE
         expenses += c.price;
-        income += 100*c.seats;
+        income += ticketPrice*c.seats;
         break;
       case 't': //M TABLE
         expenses += c.price;
-        income += 100*c.seats;
+        income += ticketPrice*c.seats;
         break;
       case 'B': //S TABLE
         expenses += c.price;
-        income += 100*c.seats;
+        income += ticketPrice*c.seats;
         break;
       case 'U': //UiO
         expenses += c.price;

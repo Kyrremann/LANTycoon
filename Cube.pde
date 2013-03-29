@@ -1,6 +1,11 @@
+import java.util.List;
+
 class Cube {
-  int x, y, r, g, b,w, h, value, price, seats, maxSeats;
+
+  int x, y, r, g, b, value, price, maxSeats, seats, tempSeats;
+  int w, h;
   char type;
+  boolean vertical;
 
   public Cube(int x, int y, char type) {
     this.x = x;
@@ -15,7 +20,7 @@ class Cube {
       g = 120;
       b = 39;
       price = 800;
-      
+      seats = 8;
       break;
     case 't': //M TABLE
       w = 20;
@@ -24,6 +29,7 @@ class Cube {
       g = 120;
       b = 39;
       price = 300;
+      seats = 4;
       break;
     case 'B': //S TABLE
       w = 10;
@@ -32,6 +38,7 @@ class Cube {
       g = 120;
       b = 39;
       price = 100;
+      seats = 2;
       break;
     case 'U': //UiO
       w = 80;
@@ -70,8 +77,12 @@ class Cube {
   void draw() {
     fill(r, g, b);
     rect(x, y, w, h);
-
-    // rect((mouseX/10)*10, (mouseY/10)*10, 40, 10);
+    if (seats > 0) {
+      fill(255);
+      textAlign(CENTER);
+      textSize(10);
+      text(seats - tempSeats, x + (w / 2), y + h - 1);
+    }
   }
 
   void update() {
@@ -86,6 +97,116 @@ class Cube {
     if ((c.x+c.w) <= x) return true;
     if ((c.y+c.h) <= y) return true;
     return false;
+  }
+
+  boolean checked;
+
+  void clearSeats(List<Cube> cubes) {
+    tempSeats = 0;
+    for (Cube c : cubes) {
+      c.tempSeats = 0;
+      if (vertical && c.vertical) {
+        for (int j = 0; j < h/10; j++) {
+          for (int i = 0; i < c.h / 10; i++) {
+            if (x == c.x + w || x + w == c.x) {
+              if ((y + (j * 10)) == (c.y + (i * 10))) {
+                tempSeats++;
+                c.tempSeats++;
+              }
+            }
+          }
+        }
+      }
+      else if (vertical) {
+        for (int i = 0; i < c.w / 10; i++) {
+          if (x == c.x + (i * 10)) {
+            if (y == c.y + c.h || y + h == c.y) {
+              c.tempSeats++;
+            }
+          }
+        }
+
+        for (int i = 0; i < h/10; i++) {
+          if (c.y == y + (i * 10)) {
+            if (x == c.x + c.w || x + w == c.x) {
+              tempSeats++;
+            }
+          }
+        }
+      } 
+      else if (c.vertical) {
+        for (int i = 0; i < w / 10; i++) {
+          if (c.x == x + (i * 10)) {
+            if (c.y == y + h || c.y + c.h == y) {
+              tempSeats++;
+            }
+          }
+        }
+
+        for (int i = 0; i < c.h/10; i++) {
+          if (y == c.y + (i * 10)) {
+            if (c.x == x + w || c.x + c.w == x) {
+              c.tempSeats++;
+            }
+          }
+        }
+      }
+      else {
+        for (int j = 0; j < w/10; j++) {
+          for (int i = 0; i < c.w / 10; i++) {
+            if (y == c.y + h || y + h == c.y) {
+              if ((x + (j * 10)) == (c.x + (i * 10))) {
+                tempSeats++;
+                c.tempSeats++;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    for (int j = 0; j < w/10; j++) {
+      if (y + h == LANTycoon.this.game.hmaxh || y == LANTycoon.this.game.hminh) {
+        tempSeats++;
+      }
+    }
+  }
+
+  void saveClearSeats(List<Cube> cubes) {
+    tempSeats = 0;
+    for (Cube c : cubes) {
+      c.tempSeats = 0;
+      if (vertical && c.vertical) {
+        for (int j = 0; j < h/10; j++) {
+          for (int i = 0; i < c.h / 10; i++) {
+            if (x == c.x + w || x + w == c.x) {
+              if ((y + (j * 10)) == (c.y + (i * 10))) {
+                seats--;
+                c.seats--;
+              }
+            }
+          }
+        }
+      } 
+      else {
+        for (int j = 0; j < w/10; j++) {
+          for (int i = 0; i < c.w / 10; i++) {
+            if (y == c.y + h || y + h == c.y) {
+              if ((x + (j * 10)) == (c.x + (i * 10))) {
+                seats--;
+                c.seats--;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    for (int j = 0; j < w/10; j++) {
+      if (y + h == LANTycoon.this.game.hmaxh || y == LANTycoon.this.game.hminh) {
+        seats--;
+      }
+    }
   }
 }
 
