@@ -29,19 +29,24 @@ class Game {
       textAlign(LEFT);
       textSize(21);
       text("Choose your LAN hall:", 30, 30);
+      textSize(16);
+      text("Money: " + money, 500, 60);
       stroke(255);
-      fill(128, 128, 128);
+      fill(102, 51, 0);
       rect(100, 100, 50, 50);
-      text("Menighetshus\n0,-", 160,117);
-      fill(255, 0, 0);
+      text("Menighetshus\n0,-", 160, 117);
+      if (money >= 1000) fill(255, 0, 0);
+      else fill(100);
       rect(320, 100, 50, 50);
-      text("Gymsal\n1 000,-", 380,117);
-      fill(0, 255, 0);
+      text("Gymsal\n1 000,-", 380, 117);
+      if (money >= 5000) fill(0, 255, 0);
+      else fill(100);
       rect(100, 300, 50, 50);
-      text("Flerbrukshall\n5 000,-", 160,317);
-      fill(0, 0, 255);
+      text("Flerbrukshall\n5 000,-", 160, 317);
+      if (money >= 10000) fill(0, 0, 255);
+      else fill(100);
       rect(320, 300, 50, 50);
-      text("Vikingskipet\n10 000,-", 380,317);
+      text("Vikingskipet\n10 000,-", 380, 317);
       noStroke();
       break;
     case 1: // build it
@@ -100,8 +105,8 @@ class Game {
 
       textSize(21);
       textAlign(CENTER);
-      if (year<2014 && money > 99) text("PRESS ANY KEY\nTO CONTINUE\n(or esc to quit)", 500, 250);
-      else text("PRESS ANY KEY\nTO QUIT", 500, 250);
+      if (year<2014 && money > 99) text("CLICK\nTO CONTINUE\n(or esc to quit)", 500, 250);
+      else text("CLICK\nTO QUIT", 500, 250);
       break;
     }
   }
@@ -286,13 +291,16 @@ class Game {
       if (mouseX > 100 && mouseX < 150 && mouseY > 100 && mouseY < 150) { // small hall
         lanHall = 0;
       } 
-      else if (mouseX > 320 && mouseX < 370 && mouseY > 100 && mouseY < 150) { // medium
+      else if (mouseX > 320 && mouseX < 370 && mouseY > 100 && mouseY < 150 && money >= 1000) { // medium
+        money -=1000;
         lanHall = 1;
       } 
-      else if (mouseX > 100 && mouseX < 150 && mouseY > 300 && mouseY < 350) { // large
+      else if (mouseX > 100 && mouseX < 150 && mouseY > 300 && mouseY < 350 && money >= 5000) { // large
+        money -=5000;
         lanHall = 2;
       } 
-      else if (mouseX > 320 && mouseX < 370 && mouseY > 300 && mouseY < 350) { // vikingskipet
+      else if (mouseX > 320 && mouseX < 370 && mouseY > 300 && mouseY < 350 && money >= 10000) { // vikingskipet
+        money -=10000;
         lanHall = 3;
       }
       else {
