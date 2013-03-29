@@ -54,6 +54,15 @@ class Game {
       ent.draw();
       break;
     case 2: // stats
+      time = ((millis() - time)*-1)/1000;
+      year +=1;
+      grid();
+      int[] results = calculateProfits();
+      fill(0, 50);
+      rect(0.0, 0.0, (float) displayWidth, (float) displayHeight);
+      fill(51, 51, 51);
+      rect(25, 25, 775, 475);
+
       break;
     }
   }
@@ -155,6 +164,8 @@ class Game {
   void stats() {
     // TODO add stats
     int x = 520;
+    fill(51, 51, 51);
+    rect(x+170, 470, 109, 29);
     fill(255);
     line(500, 350, 800, 350);
 
@@ -163,6 +174,7 @@ class Game {
     text("TIME: " + ((millis() - time)*-1)/1000, x, 370);
     text("MONEY: " + money, x, 400);
     text("YEAR: " + year, x, 430);
+    text("IM READY!", x+ 180, 491);
   }
 
   // Dette blir en stor menu handler, boer nok lages en egen klasse for denne en gang :\
@@ -180,7 +192,7 @@ class Game {
         else if (mouseY > 49 && mouseY < 49 + 10) tempCube = new Cube(mouseX, mouseY, 't');
         else if (mouseY > 29 && mouseY < 29 + 10) tempCube = new Cube(mouseX, mouseY, 'T');
       } 
-      else if (mouseX > 500 && mouseY < 344) { // states goes here
+      else if (mouseX > 500 && mouseY > 344) { // states goes here
       }
       break;
     case 2: // stats
@@ -244,13 +256,16 @@ class Game {
       } 
       else if (mouseX > 200 && mouseX < 250 && mouseY > 200 && mouseY < 250) { // vikingskipet
         lanHall = 3;
-      } 
+      }
       else {
         return;
       }
       gameState = 1;
       break;
     case 1: // build it
+      if (mouseX > 689 && mouseY > 469) {
+        this.gameState = 2;
+      }
       break;
     case 2: // stats
       gameState = 0;
@@ -273,9 +288,50 @@ class Game {
     }
   }
 
+  int[] calculateProfits() {
+    int expenses = 0;
+    int income = 0;
+    float multiplier = 1.0;
+    for (Cube c : cubes) {
+      switch (c.type) {
+      case 'T': //L TABLE
+        expenses += c.price;
+        income += 100*c.seats;
+        break;
+      case 't': //M TABLE
+        expenses += c.price;
+        income += 100*c.seats;
+        break;
+      case 'B': //S TABLE
+        expenses += c.price;
+        income += 100*c.seats;
+        break;
+      case 'U': //UiO
+        expenses += c.price;
+        multiplier += 0.15;
+        break;
+      case 'K': //KOMPLETT.NO
+        expenses += c.price;
+        multiplier += 0.75;
+        break;
+      case 'R': //RNDSTAND
+        expenses += c.price;
+        multiplier += 0.1;
+        break;
+      case 'E': //ENTRANCE
+        break;
+      }
+    }
+    //Remove previous variables and use this single int array after dev is finished.
+    int [] result = {
+      round(multiplier*100), income, expenses, round(income*multiplier), (round(income*multiplier) - expenses)
+      };
+      return result;
+  }
+
   void keyPressed() {
     switch (gameState) {
-    case 0: // velg hall
+    case 0: // choose hall
       break;
     case 1: // build it
       break;
