@@ -5,7 +5,7 @@ class Game {
   Cube tempCube, ent;
   int gameState;
   int lanHall, hminw, hmaxw, hminh, hmaxh;
-  long time, money, year;
+  long time, money, year, roundTime, lastMillis;
   boolean hallDrawn, gameCompleted;
   int[] results;
 
@@ -17,7 +17,7 @@ class Game {
     lanHall = -1;
 
     // temp
-    time = millis()+120000;
+    roundTime = 120000;
     year = 1992;
     money = 1000;
   }
@@ -50,9 +50,15 @@ class Game {
       noStroke();
       break;
     case 1: // build it
-      if (!gameCompleted) {
-        time = millis();
-        gameCompleted = !gameCompleted;
+      // TODO oppdater tid
+      if (millis() > lastMillis + 1000) {
+        time -= 1000;
+        lastMillis = millis();
+      }
+      if (time <= 0) {
+        gameState = 2;
+        calculateStats();
+        return;
       }
       grid();
       menu();
@@ -69,12 +75,6 @@ class Game {
       }
       break;
     case 2: // stats
-      if (gameCompleted) {
-        time = ((millis() - time)*-1)/1000;
-        year +=1;
-        results = calculateProfits();
-        gameCompleted = !gameCompleted;
-      }
       grid();
       for (Cube c : cubes) {
         c.draw();
@@ -206,7 +206,6 @@ class Game {
   }
 
   void stats() {
-    // TODO add stats
     int x = 520;
     fill(51, 51, 51);
     rect(x+170, 470, 109, 29);
@@ -215,13 +214,18 @@ class Game {
 
     textAlign(LEFT);
     textSize(18);
-    text("TIME: " + ((millis() - time)*-1)/1000, x, 370);
+    text("TIME: " + time/1000 + " seconds", x, 370);
     text("MONEY: " + money, x, 400);
     text("YEAR: " + year, x, 430);
     text("IM READY!", x+ 180, 491);
   }
 
-  // Dette blir en stor menu handler, boer nok lages en egen klasse for denne en gang :\
+  void calculateStats() {
+    time = roundTime;
+    year++;
+    results = calculateProfits();
+  }
+
   void mousePressed() {
     switch (gameState) {
     case 0: // velg hall
@@ -306,6 +310,9 @@ class Game {
       else {
         return;
       }
+      // The game starts now!
+      time = roundTime;
+      lastMillis = millis();
       gameState = 1;
       break;
     case 1: // build it
@@ -326,6 +333,7 @@ class Game {
       }
       if (mouseX > 689 && mouseY > 469) {
         this.gameState = 2;
+        calculateStats();
       }
       break;
     case 2: // stats
