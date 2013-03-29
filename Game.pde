@@ -50,7 +50,6 @@ class Game {
       noStroke();
       break;
     case 1: // build it
-      // TODO oppdater tid
       if (millis() > lastMillis + 1000) {
         time -= 1000;
         lastMillis = millis();
@@ -224,6 +223,7 @@ class Game {
     time = roundTime;
     year++;
     results = calculateProfits();
+    money += results[3];
   }
 
   void mousePressed() {
@@ -316,33 +316,22 @@ class Game {
       gameState = 1;
       break;
     case 1: // build it
-      if (mouseButton == RIGHT && tempCube == null) {
-        if (mouseX > hminw && mouseX < hmaxw && mouseY > hminh && mouseY < hmaxh) {
-          Cube tmp = null;
-          for (Cube c : cubes) {
-            if (mouseX > c.x && mouseX < c.x + c.w && mouseY > c.y && mouseY < c.y + c.h) {
-              tmp = c;
-              break;
-            }
-          }
-          if (tmp != null) {
-            cubes.remove(tmp);
-            money += tmp.price / 2;
-          }
-        }
-      }
       if (mouseX > 689 && mouseY > 469) {
         this.gameState = 2;
         calculateStats();
       }
       break;
     case 2: // stats
-      time = millis()+120000;
-      money += results[3];
+      // time = millis()+120000;
       cubes = new ArrayList<Cube>();
       hallDrawn = false;
       if (year>2013 || money < 99) {
         gameState = 0;
+        lanHall = -1;
+
+        roundTime = 120000;
+        year = 1992;
+        money = 1000;
         LANTycoon.this.tycoonState = 0;
       }
       else 
@@ -412,6 +401,21 @@ class Game {
     case 0: // choose hall
       break;
     case 1: // build it
+      if (key == 'd' && tempCube == null) {
+        if (mouseX > hminw && mouseX < hmaxw && mouseY > hminh && mouseY < hmaxh) {
+          Cube tmp = null;
+          for (Cube c : cubes) {
+            if (mouseX > c.x && mouseX < c.x + c.w && mouseY > c.y && mouseY < c.y + c.h) {
+              tmp = c;
+              break;
+            }
+          }
+          if (tmp != null) {
+            cubes.remove(tmp);
+            money += tmp.price;// / 2;
+          }
+        }
+      }
       break;
     case 2: // stats
       break;

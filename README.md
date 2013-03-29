@@ -1,7 +1,7 @@
 LANTycoon
 =========
 
-WE R GONNA WIN!
+WE'R GONNA WIN!
 
 ##TODO
 - ~~Game menu~~
@@ -19,5 +19,6 @@ WE R GONNA WIN!
 - Valid location pathfinding  
  - ~~valid seat placement~~
 - ~~Write HOWTO~~
-- Cube deletion
+- ~~Cube deletion~~
 - ~~TIME BUG~~
+- GFX improvement 

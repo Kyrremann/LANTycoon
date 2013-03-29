@@ -12,7 +12,7 @@ String superLongHowToString = "Welcome to LANTycoon\nThis is a very simple "
 + "- Each LAN hall also cost money to rent (except the first one). So you need to add this to your price calculation." +
 "- Each table square have room for two particpants, so don't make it to close or else you miss seats." +
 "- There are some exception to this last rule (It's not a bug, it's a feature!)." +
-"- You can sell seats or stand with right click.";
+"- You can sell seats or stand by pressing 'd' while hovering over.";
 
 void setup() {
   size(800, 500);
@@ -117,6 +117,20 @@ void keyPressed() {
     tycoonState = 2;
     break;
   case 2: // game
+    break;
+  case 3: // score
+    break;
+  }
+}
+
+void keyReleased() {
+  switch(tycoonState) {
+  case 0: // intro
+    break;
+  case 1: // howto
+    break;
+  case 2: // game
+  game.keyReleased();
     break;
   case 3: // score
     break;
