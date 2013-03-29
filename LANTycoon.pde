@@ -65,6 +65,20 @@ void mouseReleased() {
   }
 }
 
+void mouseDragged() {
+  switch(tycoonState) {
+  case 0: // intro
+    break;
+  case 1: // howto
+    break;
+  case 2: // game
+    game.mouseDragged();
+    break;
+  case 3: // score
+    break;
+  }
+}
+
 void mouseClicked() {
   switch(tycoonState) {
   case 0: // intro

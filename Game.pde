@@ -2,7 +2,7 @@ import java.util.List;
 
 class Game {
   List<Cube> cubes;
-  Cube tempCube;
+  Cube tempCube, ent;
   int gameState;
   int lanHall, hminw, hmaxw, hminh, hmaxh;
   long time, money, year;
@@ -51,6 +51,7 @@ class Game {
         tempCube.update();
         tempCube.draw();
       }
+      ent.draw();
       break;
     case 2: // stats
       break;
@@ -59,6 +60,7 @@ class Game {
 
   void menu() {
     pushMatrix();
+    textAlign(LEFT);
     fill(200, 200, 200);
     translate(500, 0);
     textSize(12);
@@ -111,28 +113,28 @@ class Game {
         hmaxw = 300;
         hminh = 200;
         hmaxh = 250;
-        cubes.add(new Cube(hminw, hmaxh, 'E')); //Entrance
+        ent = new Cube(hminw, hmaxh, 'E'); //Entrance
         break;
       case 1: // for medium map
         hminw = 150;
         hmaxw = 350;
         hminh = 200;
         hmaxh = 300;
-        cubes.add(new Cube(hminw, hmaxh, 'E')); //Entrance
+        ent = new Cube(hminw, hmaxh, 'E'); //Entrance
         break;
       case 2: // for big map
         hminw = 50;
         hmaxw = 450;
         hminh = 200;
         hmaxh = 400;
-        cubes.add(new Cube(hminw, hmaxh, 'E')); //Entrance
+        ent = new Cube(hminw, hmaxh, 'E'); //Entrance
         break;
       case 3: // for vikingskipet map
         hminw = 50;
         hmaxw = 450;
         hminh = 50;
         hmaxh = 450;
-        cubes.add(new Cube(hminw, hmaxh, 'E')); //Entrance
+        ent = new Cube(hminw, hmaxh, 'E'); //Entrance
         break;
       }
       hallDrawn = true;
@@ -192,12 +194,13 @@ class Game {
       break;
     case 1: // build it
       if (mouseButton == RIGHT) {
-        int tempValue = tempCube.w;
-        tempCube.w = tempCube.h;
-        tempCube.h = tempValue;
+        if (tempCube != null) {
+          int tempValue = tempCube.w;
+          tempCube.w = tempCube.h;
+          tempCube.h = tempValue;
+        }
       }
-      else {
-        // TODO Add map constraints
+      else if (mouseButton == LEFT) {
         if (tempCube != null) {
           if (mouseX > hminw && mouseY > hminh && mouseX <= 10 + hmaxw-tempCube.w && mouseY <= 10 + hmaxh-tempCube.h) {
             for (Cube c : cubes) { // Look for busy area
@@ -211,9 +214,9 @@ class Game {
               tempCube = null;
               return;
             }
+            tempCube.saveClearSeats(cubes);
+            //money -= c.price;
             cubes.add(tempCube);
-            // remove money from account
-            money -= tempCube.price;
             tempCube = null;
           } 
           else {
@@ -248,6 +251,22 @@ class Game {
       gameState = 1;
       break;
     case 1: // build it
+      break;
+    case 2: // stats
+      gameState = 0;
+      LANTycoon.this.tycoonState = 0;
+      break;
+    }
+  }
+
+  void mouseDragged() {
+    switch (gameState) {
+    case 0: // velg hall
+      break;
+    case 1: // build it
+      if (tempCube != null) {
+        tempCube.clearSeats(cubes);
+      }
       break;
     case 2: // stats
       break;
