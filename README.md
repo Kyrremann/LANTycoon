@@ -7,11 +7,15 @@ WE R GONNA WIN!
 - ~~Game menu~~
  - GFX improvement
 - ~~Ingame Menu~~ 
- - minor fixes  
+ - ~~minor fixes~~  
  - GFX improvement
 - ~~Score calculation~~  
  - Balance variables
 - ~~Cost calculation~~  
-- End (year) turn stats display  
+ - Cost of leasing Hall
+- ~~End (year) turn stats display~~  
+ - GFX improvement  
 - Valid location pathfinding  
- - valid seat placement
+ - ~~valid seat placement~~
+- ~~Write HOWTO~~
+- Cube deletion

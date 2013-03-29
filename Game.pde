@@ -6,16 +6,18 @@ class Game {
   int gameState;
   int lanHall, hminw, hmaxw, hminh, hmaxh;
   long time, money, year;
-  boolean hallDrawn;
+  boolean hallDrawn, gameCompleted;
+  int[] results;
 
   public Game() {
+    gameCompleted = true;
     cubes = new ArrayList<Cube>();
 
     gameState = 0;
     lanHall = -1;
 
     // temp
-    time = millis();
+    time = millis()+120000;
     year = 1992;
     money = 10000;
   }
@@ -30,15 +32,23 @@ class Game {
       stroke(255);
       fill(128, 128, 128);
       rect(100, 100, 50, 50);
+      text("Menighetshus\n0,-", 160,117);
       fill(255, 0, 0);
-      rect(200, 100, 50, 50);
+      rect(320, 100, 50, 50);
+      text("Gymsal\n10 000,-", 380,117);
       fill(0, 255, 0);
-      rect(100, 200, 50, 50);
+      rect(100, 300, 50, 50);
+      text("Flerbrukshall\n100 000,-", 160,317);
       fill(0, 0, 255);
-      rect(200, 200, 50, 50);
+      rect(320, 300, 50, 50);
+      text("Vikingskipet\n10 000 000,-", 380,317);
       noStroke();
       break;
     case 1: // build it
+      if (!gameCompleted) {
+        time = millis();
+        gameCompleted = !gameCompleted;
+      }
       grid();
       menu();
       stats();
@@ -53,15 +63,44 @@ class Game {
       }
       break;
     case 2: // stats
-      time = ((millis() - time)*-1)/1000;
-      year +=1;
+      textAlign(LEFT);
+      if (gameCompleted) {
+        time = ((millis() - time)*-1)/1000;
+        year +=1;
+        results = calculateProfits();
+        gameCompleted = !gameCompleted;
+      }
       grid();
-      int[] results = calculateProfits();
+      for (Cube c : cubes) {
+        c.draw();
+      }
       fill(0, 50);
-      rect(0.0, 0.0, (float) displayWidth, (float) displayHeight);
-      fill(51, 51, 51);
-      rect(25, 25, 775, 475);
+      rect(-10.0, -10.0, (float) displayWidth, (float) displayHeight);
+      fill(121, 121, 121, 199);
+      rect(25, 25, 750, 450);
+      fill(250);
+      textSize(24);
+      text("SCORE", 100, 110);
+      line(90, 120, 190, 120);
+      pushMatrix();
+      textSize(21);
+      fill(random(255), random(255), random(255));
+      translate(200, 200);
+      rotate(radians(PI/0.30));
+      text("TG-" + (year-1) + " FINISHED!", -100, -100);
+      popMatrix();
 
+      fill(150);
+      textSize(18);
+      text("Year:   " + (year-1) + "\nExpenses: " + results[2] + "\nTicketsales: " + results[1] + "\nStand attraction " + (results[0]) + "\n\n\n\nNet Income: " + results[4], 100, 150);
+      textSize(22);
+      fill(250);
+      text("INCOME: " + results[3], 100, 300);
+
+      textSize(21);
+      textAlign(CENTER);
+      if (year<2014 && money > 99) text("PRESS ANY KEY\nTO CONTINUE\n(or esc to quit)", 500, 250);
+      else text("PRESS ANY KEY\nTO QUIT", 500, 250);
       break;
     }
   }
@@ -265,6 +304,16 @@ class Game {
       }
       break;
     case 2: // stats
+      time = millis()+120000;
+      money += results[3];
+      cubes = new ArrayList<Cube>();
+      hallDrawn = false;
+      if (year>2013 || money < 99) {
+        gameState = 0;
+        LANTycoon.this.tycoonState = 0;
+      }
+      else 
+        gameState = 0;
       break;
     }
   }
@@ -310,15 +359,13 @@ class Game {
       return result;
   }
 
-  void keyPressed() {
+  void keyReleased() {
     switch (gameState) {
     case 0: // choose hall
       break;
     case 1: // build it
       break;
     case 2: // stats
-      gameState = 0;
-      LANTycoon.this.tycoonState = 0;
       break;
     }
   }
